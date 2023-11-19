@@ -16,7 +16,8 @@ const Timer = () => {
     return () => clearInterval(interval);
   }, []);
 
-  if (now === null) return <div>Loading...</div>;
+  if (now === null)
+    return <div className="text-neutral-500">Calculating...</div>;
 
   const endOfYear = dayjs().endOf('year');
   const timeDiff = endOfYear.diff(now);
@@ -45,24 +46,24 @@ const Timer = () => {
     <div id="container" className="w-3/5 drop-shadow-md relative">
       <div
         id="gloss"
-        className="w-full rounded-md border-solid border-2 border-red-800 py-8 px-11 flex justify-between items-start min-w-fit bg-gradient-to-b from-red-600 from-[31%] to-red-400  shadow-lg shadow-red-200/20 text-red-900 before:bg-gradient-to-b before:from-white before:via-white/70 before:via-[8%] before:to-transparent before:absolute before:w-[calc(100%_-_0.8rem)] before:h-1/3 before:top-0.5 before:left-0 before:right-0 before:rounded-lg before:mx-auto"
+        className="w-full rounded-lg border-solid border-4 border-tomato py-7 px-9 flex justify-between items-start min-w-fit text-tomato font-semibold hover:before:w-full hover:before:h-full hover:before:absolute hover:before:top-0 hover:before:left-0 hover:before:bg-[radial-gradient(closest-side,_var(--tw-gradient-stops))] hover:before:from-transparent hover:before:from-30% hover:before:to-red-500/40 hover:before:animate-[pulse_0.9s_cubic-bezier(0.4,_0,_0.6,_1)_infinite] hover:text-tomato  shadow-rose-300/20 hover:shadow-black/10"
       >
         <div className="flex flex-col justify-center items-center z-1 relative">
-          <div className="text-6xl text-shadow shadow-white/50">{`${hours}`}</div>
+          <div className="text-6xl text-shadow">{`${hours}`}</div>
           <div className="mt-2">{`hours`}</div>
         </div>
 
-        <div className="text-6xl text-shadow shadow-white/50 z-1 relative">{`:`}</div>
+        <div className="py-4 text-3xl text-shadow z-1 relative">{`|`}</div>
 
         <div className="flex flex-col items-center z-1 relative">
-          <div className="text-6xl text-shadow shadow-white/50">{`${minutes}`}</div>
+          <div className="text-6xl text-shadow">{`${minutes}`}</div>
           <div className="mt-2">{`mins`}</div>
         </div>
 
-        <div className="text-6xl text-shadow shadow-white/50 z-1 relative">{`:`}</div>
+        <div className="py-4  text-3xl text-shadow z-1 relative">{`|`}</div>
 
         <div className="flex flex-col items-start w-40 pe-6 z-1 relative">
-          <div className="text-6xl text-shadow shadow-white/50">
+          <div className="text-6xl text-shadow">
             {`${seconds}.${milliseconds.substring(0, 2)}`}
           </div>
           <div className="text-center w-full mt-2">{`seconds`}</div>

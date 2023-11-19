@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@next/font": "^14.0.3",
     "dayjs": "^1.11.10",
     "next": "latest",
     "react": "latest",
