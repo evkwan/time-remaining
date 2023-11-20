@@ -17,9 +17,9 @@ const Body = () => {
         <span className="text-cheese">{`Day ${dayNumber}`}</span>
       </div>
       {/* <div className="leading-relaxed">{`Day ${dayNumber}`}</div> */}
-      <div className="text-base mb-4 text-neutral-400">
+      <div className="mb-4 text-neutral-400">
         {daysLeft < 100 && 'Just '}
-        <span className="text-spinach">{`${daysLeft} days `}</span>
+        <span className="text-rose-600">{`${daysLeft} days `}</span>
         {'left in the year.'}
       </div>
     </div>
