@@ -1,8 +1,8 @@
 import React from 'react';
-import dayjs from 'dayjs';
+import { DateTime } from 'luxon';
 
 const Footer: React.FC = () => {
-  const year = dayjs().year();
+  const year = DateTime.now().year;
   return <div className="text-sm absolute bottom-4">{`${year} © evkwan`}</div>;
 };
 

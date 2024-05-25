@@ -10,12 +10,13 @@
   },
   "dependencies": {
     "@next/font": "^14.0.3",
-    "dayjs": "^1.11.10",
+    "luxon": "^3.4.4",
     "next": "latest",
     "react": "latest",
     "react-dom": "latest"
   },
   "devDependencies": {
+    "@types/luxon": "^3.4.2",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",

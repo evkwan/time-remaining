@@ -1,14 +1,10 @@
-import dayjs from 'dayjs';
 import React from 'react';
-import dayOfYear from 'dayjs/plugin/dayOfYear';
+import { DateTime } from 'luxon';
 
 const Body = () => {
-  dayjs.extend(dayOfYear);
-  const today = dayjs().format('dddd, MMM D');
-  const endOfYear = dayjs().endOf('year');
-  const dayNumber = dayjs().dayOfYear();
-  const daysLeft = endOfYear.diff(dayjs(), 'day');
-  //   const year = dayjs().year();
+  const today = DateTime.now().toFormat('cccc, LLL d');
+  const dayNumber = DateTime.now().ordinal;
+  const daysLeft = DateTime.now().daysInYear - dayNumber;
 
   return (
     <div className="mt-4 flex flex-col justify-center items-center text-2xl">
