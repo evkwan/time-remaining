@@ -1,0 +1,26 @@
+---
+description: Read docs/project_state.md at session start; update it after meaningful work
+alwaysApply: true
+---
+
+# Project state handoff
+
+## Before starting substantive work
+
+- Open and read `docs/project_state.md` for **Current phase**, **Next up**, and **Decisions locked**.
+- If the task touches implementation, skim `docs/TECHNICAL_IMPLEMENTATION_PLAN.md` for stack and slice order.
+
+## After meaningful changes
+
+When you finish work that affects how the next session should continue, update `docs/project_state.md`:
+
+1. **Log** — Prepend a new row (most recent first) with today’s date and a short summary: what changed, key files or areas touched.
+2. **Current phase** — Adjust if the project phase shifted (e.g. from planning to scaffolding).
+3. **Next up** — Check off done items; add or reorder follow-ups if needed.
+4. **Decisions locked** — Add a row when you introduce or confirm a durable technical choice.
+
+Skip log-only updates for trivial fixes (typos, formatting) unless the user asks for a record.
+
+## Path
+
+- State file: `docs/project_state.md` (repo root: `acountability-partner/docs/project_state.md`).

@@ -1,0 +1,22 @@
+---
+description: Prevent committing local environment secret files
+alwaysApply: true
+---
+
+# Environment File Safety
+
+- Never run `git add -f` for `.env`, `.env.*`, or any local secret file.
+- Never include environment secrets in commits, PRs, patches, or examples.
+- If a task would stage ignored env files, stop and warn the user instead.
+- Use `.env.example` for placeholders and documentation only.
+- Treat these as secret files by default: `*.pem`, `*.key`, `*.p12`, `*.pfx`, `id_rsa`, `id_ed25519`, `credentials.json`, `service-account*.json`, `secrets*.json`, `.npmrc`, `.pypirc`, `.netrc`.
+- Never stage or commit secret files unless the user explicitly asks and confirms they contain no secrets.
+
+## Examples
+
+- Forbidden: `git add -f .env`
+- Forbidden: `git add -f apps/web/.env.local`
+- Forbidden: `git add credentials.json`
+- Forbidden: `git add secrets-prod.json`
+- Forbidden: `git add id_rsa`
+- Allowed: `git add .env.example`

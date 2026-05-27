@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Time Remaining
 
-## Getting Started
+A minimalist live countdown to the end of the year — with day-of-year context, week number, year progress, and a daily motivation quote.
 
-First, run the development server:
+Built to create a sense of urgency: the time left in the year is finite, so make it count.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## What it does
+
+- **Live countdown** — Hours, minutes, and seconds (with centiseconds) until December 31 at 23:59:59 local time
+- **Year context** — Current date, day of year, week of year, days remaining, and a progress bar
+- **Daily quote** — One motivation quote per calendar day (stable across refreshes, no hydration flicker)
+
+## Tech stack
+
+| Layer | Choice |
+| --- | --- |
+| Framework | [Next.js 15](https://nextjs.org/) (App Router, React Server Components) |
+| Language | TypeScript (strict) |
+| Styling | [Tailwind CSS 3](https://tailwindcss.com/) |
+| UI | [shadcn/ui](https://ui.shadcn.com/) (Radix primitives, New York style) |
+| Date/time | [Luxon](https://moment.github.io/luxon/) |
+| Fonts | [Geist](https://vercel.com/font) via `next/font` |
+| Deploy | [Vercel](https://vercel.com/) |
+
+## Project structure
+
+```
+src/
+├── app/                  # Next.js App Router (layout, page, SEO routes)
+├── components/           # UI components (feature + shadcn ui/)
+└── lib/                  # Pure utilities (time, quotes, site config)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+**Architecture notes**
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Server Components by default; only the countdown timer is a Client Component (`useEffect` + interval)
+- Date logic lives in `src/lib/time.ts` (testable, no React)
+- Quotes are deterministic by day-of-year (SSR-safe)
+- SEO: metadata API, Open Graph, Twitter cards, JSON-LD, `sitemap.xml`, `robots.txt`
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Getting started
 
-## Learn More
+**Requirements:** Node.js 20+
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### Environment variables
+
+Copy `.env.example` to `.env.local` and set your production URL for correct canonical links and sitemap:
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+
+## Scripts
+
+| Command | Description |
+| --- | --- |
+| `npm run dev` | Dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Serve production build |
+| `npm run lint` | ESLint |
+| `npm run typecheck` | TypeScript check |
 
 ## Deploy on Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Push to GitHub and import the repo in [Vercel](https://vercel.com/new)
+2. Set `NEXT_PUBLIC_SITE_URL` to your deployment URL (e.g. `https://time-remaining.vercel.app`)
+3. Deploy — no backend or database required
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## SEO checklist (implemented)
+
+- [x] Title, description, keywords via Metadata API
+- [x] Open Graph and Twitter card metadata
+- [x] Canonical URL and `metadataBase`
+- [x] `robots.txt` and `sitemap.xml`
+- [x] JSON-LD (`WebApplication` schema)
+- [x] Semantic HTML (`main`, `header`, `footer`, `blockquote`, progressbar ARIA)
+- [ ] OG image — add `opengraph-image.tsx` when you have a branded asset
+
+## License
+
+Private project — © evkwan
