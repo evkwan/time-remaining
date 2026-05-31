@@ -2,9 +2,11 @@ import { DateTime } from 'luxon';
 
 import { Badge } from '@/components/ui/badge';
 import { getYearContext } from '@/lib/time';
+import { cn } from '@/lib/utils';
 
 export function YearContextPanel() {
   const context = getYearContext(DateTime.now());
+  const isUrgent = context.daysRemaining > 0 && context.daysRemaining < 100;
 
   return (
     <section
@@ -12,22 +14,31 @@ export function YearContextPanel() {
       aria-label="Year progress"
     >
       <div className="flex flex-wrap items-center justify-center gap-2">
-        <Badge variant="secondary">{context.formattedDate}</Badge>
-        <Badge variant="outline">Day {context.dayOfYear}</Badge>
-        <Badge variant="outline">Week {context.weekOfYear}</Badge>
+        <Badge variant="sky">{context.formattedDate}</Badge>
+        <Badge variant="emerald">Day {context.dayOfYear}</Badge>
+        <Badge variant="amber">Week {context.weekOfYear}</Badge>
       </div>
 
       <p className="max-w-xl text-lg text-muted-foreground sm:text-xl">
         {context.daysRemaining === 0 ? (
           <>
             Today is the{' '}
-            <span className="font-medium text-foreground">last day</span> of{' '}
-            {context.year}.
+            <span className="font-semibold text-rose-500 dark:text-rose-400">
+              last day
+            </span>{' '}
+            of {context.year}.
           </>
         ) : (
           <>
             {context.daysRemaining < 100 ? 'Just ' : null}
-            <span className="font-medium text-foreground">
+            <span
+              className={cn(
+                'font-semibold',
+                isUrgent
+                  ? 'text-rose-500 dark:text-rose-400'
+                  : 'text-foreground',
+              )}
+            >
               {context.daysRemaining} day{context.daysRemaining === 1 ? '' : 's'}
             </span>{' '}
             left in {context.year}.
@@ -51,7 +62,12 @@ export function YearContextPanel() {
           aria-label="Year progress"
         >
           <div
-            className="h-full rounded-full bg-foreground transition-all duration-500"
+            className={cn(
+              'h-full rounded-full bg-gradient-to-r transition-all duration-500',
+              isUrgent
+                ? 'from-amber-400 to-rose-500'
+                : 'from-sky-400 via-emerald-400 to-amber-400',
+            )}
             style={{ width: `${context.percentYearElapsed}%` }}
           />
         </div>
