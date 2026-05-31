@@ -8,7 +8,8 @@ Handoff file for AI and human contributors. Update after meaningful work per `.c
 
 ## Next up
 
-- [ ] Set `NEXT_PUBLIC_SITE_URL` in Vercel project settings to production domain
+- [ ] Register `yearleft.app` on Cloudflare Registrar and connect to Vercel
+- [ ] Set `NEXT_PUBLIC_SITE_URL=https://yearleft.app` in Vercel project settings
 - [ ] Deploy to Vercel and verify `/sitemap.xml`, `/robots.txt`, and meta tags
 - [ ] Add branded `opengraph-image.tsx` for social previews
 - [ ] (Optional) Unit tests for `src/lib/time.ts`
@@ -25,9 +26,11 @@ Handoff file for AI and human contributors. Update after meaningful work per `.c
 | 2026-05-27 | Quote selected by day-of-year index | SSR/hydration stable; one quote per day |
 | 2026-05-27 | Dark theme default via `className="dark"` on `<html>` | Minimalist look; system toggle deferred |
 | 2026-05-27 | Components under `src/components/`, not `src/app/components/` | Aligns with shadcn aliases and Next conventions |
+| 2026-05-31 | Domain `yearleft.app` via Cloudflare Registrar; `.app` TLD | Short, brandable, global reach; `.app` forces HTTPS; Cloudflare at-cost renewals |
 
 ## Log
 
 | Date | Summary |
 | --- | --- |
+| 2026-05-31 | Chose domain `yearleft.app` (Cloudflare Registrar). Set as default fallback in `src/lib/site.ts` and `.env.example`. Added subtle color accents to date/day/week badges and days-remaining highlight (`badge.tsx`, `year-context-panel.tsx`). Hardened `.gitignore` for env/secret files. |
 | 2026-05-27 | **Full revamp:** Upgraded to Next.js 15 / React 19 / TypeScript strict. Added shadcn/ui (Card, Badge, Separator), Geist fonts, dark minimalist layout. Extracted `lib/time`, `lib/quotes`, `lib/site`. Replaced legacy components with `CountdownTimer`, `YearContextPanel`, `MotivationQuote`, `SiteHeader`, `SiteFooter`. SEO: Metadata API, OG/Twitter, JSON-LD, sitemap, robots. Added README, `.env.example`, `docs/TECHNICAL_IMPLEMENTATION_PLAN.md`. Removed `@next/font`, old `src/app/components/*`. |
