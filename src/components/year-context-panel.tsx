@@ -1,11 +1,34 @@
-import { DateTime } from 'luxon';
+'use client';
 
 import { Badge } from '@/components/ui/badge';
+import { useNow } from '@/hooks/use-now';
 import { getYearContext } from '@/lib/time';
 import { cn } from '@/lib/utils';
 
+function YearContextSkeleton() {
+  return (
+    <section
+      className="flex w-full max-w-3xl flex-col items-center gap-6 text-center"
+      aria-label="Year progress"
+      aria-busy
+    >
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <div className="h-6 w-40 animate-pulse rounded-md bg-secondary" />
+        <div className="h-6 w-20 animate-pulse rounded-md bg-secondary" />
+        <div className="h-6 w-24 animate-pulse rounded-md bg-secondary" />
+      </div>
+      <div className="h-7 w-64 max-w-full animate-pulse rounded-md bg-secondary" />
+      <div className="h-6 w-full max-w-md animate-pulse rounded-md bg-secondary" />
+    </section>
+  );
+}
+
 export function YearContextPanel() {
-  const context = getYearContext(DateTime.now());
+  const now = useNow();
+
+  if (!now) return <YearContextSkeleton />;
+
+  const context = getYearContext(now);
   const isUrgent = context.daysRemaining > 0 && context.daysRemaining < 100;
 
   return (

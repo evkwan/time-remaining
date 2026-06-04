@@ -1,14 +1,10 @@
-import { DateTime } from 'luxon';
-
-import { getYearContext } from '@/lib/time';
+import { CurrentYear } from '@/components/current-year';
 
 export function SiteHeader() {
-  const { year } = getYearContext(DateTime.now());
-
   return (
     <header className="flex flex-col items-center gap-3 text-center">
       <p className="text-xs font-medium uppercase tracking-[0.35em] text-muted-foreground">
-        Year {year}
+        Year <CurrentYear />
       </p>
       <h1 className="text-balance text-3xl font-semibold tracking-tight sm:text-4xl md:text-5xl">
         Time remaining
