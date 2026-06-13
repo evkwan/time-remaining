@@ -5,6 +5,6 @@ export const siteConfig = {
     'Live countdown to the end of the year with day-of-year context, week number, and a daily motivation quote. Make the time you have left count.',
   url:
     process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
-    'https://yearleft.app',
+    'https://www.yearleft.app',
   author: 'evkwan',
 } as const;

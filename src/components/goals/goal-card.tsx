@@ -21,10 +21,10 @@ export function GoalCard({ goal }: { goal: Goal }) {
   const countdown = getGoalCountdown(goal, now ?? DateTime.now());
 
   const barClass = countdown.isOverdue
-    ? 'from-rose-500 to-rose-400'
+    ? 'bg-gradient-to-r from-rose-500 to-rose-400'
     : countdown.slipsPastYearEnd
-      ? 'from-amber-400 to-rose-500'
-      : 'from-sky-400 to-emerald-400';
+      ? 'bg-gradient-to-r from-amber-400 to-rose-500'
+      : 'bg-brand-gradient';
 
   return (
     <div className="group relative flex flex-col gap-4 rounded-xl border border-border/70 bg-card/70 p-5 transition-colors hover:border-border">
@@ -48,7 +48,7 @@ export function GoalCard({ goal }: { goal: Goal }) {
 
       <div className="mt-auto space-y-2">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-mono uppercase tracking-[0.18em] text-sky-300">
+          <span className="text-brand-gradient font-mono uppercase tracking-[0.18em]">
             {countdown.isOverdue ? 'Overdue' : 'Time Remaining'}
           </span>
           <span className="font-medium text-foreground">
@@ -58,7 +58,7 @@ export function GoalCard({ goal }: { goal: Goal }) {
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
           <div
             className={cn(
-              'h-full rounded-full bg-gradient-to-r transition-all duration-500',
+              'h-full rounded-full transition-all duration-500',
               barClass,
             )}
             style={{ width: `${countdown.percentTimeLeft}%` }}

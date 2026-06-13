@@ -19,6 +19,10 @@ const config: Config = {
         md: 'calc(var(--radius) - 2px)',
         sm: 'calc(var(--radius) - 4px)',
       },
+      backgroundImage: {
+        'brand-gradient':
+          'linear-gradient(to right, var(--brand-gradient-from), var(--brand-gradient-to))',
+      },
       colors: {
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

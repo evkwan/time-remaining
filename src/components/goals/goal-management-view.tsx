@@ -38,10 +38,10 @@ function ActiveRow({ goal }: { goal: Goal }) {
   const countdown = getGoalCountdown(goal, now ?? DateTime.now());
 
   const barClass = countdown.isOverdue
-    ? 'from-rose-500 to-rose-400'
+    ? 'bg-gradient-to-r from-rose-500 to-rose-400'
     : countdown.slipsPastYearEnd
-      ? 'from-amber-400 to-rose-500'
-      : 'from-sky-400 to-emerald-400';
+      ? 'bg-gradient-to-r from-amber-400 to-rose-500'
+      : 'bg-brand-gradient';
 
   return (
     <div className="rounded-xl border border-border/70 bg-card/60 p-5">
@@ -92,7 +92,7 @@ function ActiveRow({ goal }: { goal: Goal }) {
 
       <div className="mt-4 space-y-2">
         <div className="flex items-center justify-between text-xs">
-          <span className="font-mono uppercase tracking-[0.15em] text-sky-300">
+          <span className="text-brand-gradient font-mono uppercase tracking-[0.15em]">
             {countdown.isOverdue ? 'Overdue' : 'Time Left'}
           </span>
           <span className="text-muted-foreground">
@@ -103,7 +103,7 @@ function ActiveRow({ goal }: { goal: Goal }) {
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
           <div
-            className={cn('h-full rounded-full bg-gradient-to-r', barClass)}
+            className={cn('h-full rounded-full', barClass)}
             style={{ width: `${countdown.percentTimeLeft}%` }}
           />
         </div>

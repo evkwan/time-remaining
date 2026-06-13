@@ -95,7 +95,7 @@ export function GoalFormDialog() {
     >
       <DialogContent className="max-w-md">
         <DialogHeader>
-          <p className="text-xs font-medium uppercase tracking-[0.25em] text-sky-400">
+          <p className="text-brand-gradient text-xs font-medium uppercase tracking-[0.25em]">
             {isEditing ? 'Refining Intent' : 'Intention Setting'}
           </p>
           <DialogTitle className="text-2xl">
@@ -204,7 +204,7 @@ export function GoalFormDialog() {
             </div>
             <div className="h-1.5 w-20 overflow-hidden rounded-full bg-secondary">
               <div
-                className="h-full rounded-full bg-gradient-to-r from-sky-400 to-emerald-400"
+                className="h-full rounded-full bg-brand-gradient"
                 style={{ width: runway > 0 ? '100%' : '0%' }}
               />
             </div>
