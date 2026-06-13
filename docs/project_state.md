@@ -19,13 +19,14 @@ Next focus: SEO enrichment (OG image, favicon, manifest, crawlable content, Sear
 
 ### SEO enrichment
 
-- [ ] `opengraph-image.tsx` — branded 1200×630 dynamic OG image (fills blank link preview; biggest CTR win)
+- [x] `opengraph-image.tsx` — branded 1200×630 OG image (dark + brand-gradient, evergreen; verified renders via `next/og`)
 - [x] Favicon — `src/app/icon.png` (1024×1024, user-supplied)
 - [x] `apple-icon.png` — Apple touch icon (180×180) for iOS "Add to Home Screen"
 - [x] `manifest.ts` — PWA manifest (name/desc from `siteConfig`, 192/512 icons in `public/`, standalone, `#0a0a0a`)
-- [ ] Crawlable About/FAQ section targeting real queries ("how many days left in the year", "what week of the year is it", "day of the year")
-- [ ] Google Search Console — `metadata.verification.google` hook + submit sitemap (needs verification code from user)
-- [ ] (Optional) Dynamic year in `<title>` for freshness/query match
+- [x] Crawlable About/FAQ section + `FAQPage` JSON-LD targeting real queries ("how many days left in <year>", week/day of year, leap year) — `year-seo-content.tsx` + `lib/seo.ts`
+- [x] Dynamic year in `<title>`/H1/description — homepage `generateMetadata` + server-rendered hero; homepage now ISR (`revalidate = 3600`) so dates stay current for crawlers
+- [ ] **Google Search Console — NOT DONE (user action): verify domain, submit sitemap, Request Indexing. `site:yearleft.app` currently returns nothing = site is not indexed yet.** Add `metadata.verification.google` once code is issued.
+- [ ] Off-page: build authority/backlinks (Product Hunt, Reddit, HN) — competitive query owned by high-authority sites; new domain has none.
 - [ ] (Optional) Unit tests for `src/lib/time.ts`
 - [ ] (Optional) Light/dark mode toggle
 
@@ -60,6 +61,7 @@ Next focus: SEO enrichment (OG image, favicon, manifest, crawlable content, Sear
 
 | Date | Summary |
 | --- | --- |
+| 2026-06-14 | **On-page SEO pass for "how many days left in <year>".** Root cause of zero ranking: (1) `site:yearleft.app` returns nothing → not indexed; (2) homepage server HTML was near-empty because all date UI is client-rendered, so crawlers saw an `<h1>` of "Time remaining" and no answer. Fixes: homepage → ISR (`export const revalidate = 3600`) so server-rendered dates stay current without build-freezing (keeps the device-time decision: client components still refine to local time, server text is the crawlable baseline). Added `generateMetadata` (year in title/desc/OG/Twitter). Hero H1 → server-rendered "How many days are left in {year}?". New `year-seo-content.tsx` + `lib/seo.ts`: crawlable summary + 6-item FAQ (days/weeks left, day/week of year, leap year, year end) with matching `FAQPage` JSON-LD. New `opengraph-image.tsx` (1200×630, dark + brand gradient; render-verified 200/image/png). Verified prerendered `index.html` contains the answer text, FAQ, schema, and og/twitter image tags. Typecheck/lint/build green. **Still needs user: Search Console verify + submit sitemap + Request Indexing, and backlinks.** |
 | 2026-06-14 | **Fixed icon white corners.** Original `icon.png` had a white (opaque) background, so the squircle's corners showed white in the browser tab. User re-exported `src/app/icon.png` with transparent corners. Regenerated derivatives from it via `sharp`: `apple-icon.png` (180×180, flattened opaque onto the sampled squircle color `#181a20` per Apple's no-alpha guidance) and `public/icon-192.png`/`icon-512.png` (kept alpha for PWA/header). |
 | 2026-06-14 | **Applied brand gradient to hero + text accents.** Hero `<h1>` "Time remaining" now uses `.text-brand-gradient`; converted the prominent sky-only text accents to gradient too: "Time Remaining"/"Time Left" eyebrows (`goal-card`, `goal-management-view`) and the "Estimated Runway" label (`goal-form-dialog`). Active nav-link underline changed from `border-sky-400` to a 2px `bg-brand-gradient` underline (`bg-[length:100%_2px] bg-bottom bg-no-repeat`). Intentionally left small translucent interactive tints on the sky anchor (category-picker selected state, empty-state hover, `badge` sky variant, the year-progress bar's sky→emerald→amber journey) — gradients render muddy as semi-transparent borders/fills. Lint + build green. |
 | 2026-06-14 | **Brand gradient as a shared theme token.** Made the sky→emerald cyan-green gradient the app's accent theme. Added `--brand-gradient-from`/`--brand-gradient-to` CSS vars (`globals.css`), a `bg-brand-gradient` utility (`tailwind.config.ts` `backgroundImage`), and a `.text-brand-gradient` helper (gradient text). Refactored all hardcoded `from-sky-400 to-emerald-400` usages to it: nav "Add Goal" button (now gradient + dark text + `hover:brightness-110`), the goal-form runway preview, and both goal time-left bars (healthy state → `bg-brand-gradient`; overdue/soon keep their rose/amber gradients). One place to change the brand colors now. Typecheck/lint/build green. |

@@ -1,4 +1,6 @@
 import { Suspense } from 'react';
+import type { Metadata } from 'next';
+import { DateTime } from 'luxon';
 
 import { AchievementsSection } from '@/components/goals/achievements-section';
 import { ActiveGoalsSection } from '@/components/goals/active-goals-section';
@@ -6,6 +8,25 @@ import { CountdownTimer } from '@/components/countdown-timer';
 import { MotivationQuote } from '@/components/motivation-quote';
 import { SiteHeader } from '@/components/site-header';
 import { YearContextPanel } from '@/components/year-context-panel';
+import { YearSeoContent } from '@/components/year-seo-content';
+import { getYearContext } from '@/lib/time';
+
+// Re-render at most hourly so server-rendered dates (H1, FAQ, metadata) stay
+// current for crawlers without freezing to build time.
+export const revalidate = 3600;
+
+export function generateMetadata(): Metadata {
+  const { year, daysRemaining } = getYearContext(DateTime.now());
+  const title = `How Many Days Are Left in ${year}? — Year Left`;
+  const description = `There are ${daysRemaining} days left in ${year}. A live countdown to the end of the year with day-of-year, week number, and the hours, minutes, and seconds remaining.`;
+
+  return {
+    title: { absolute: title },
+    description,
+    openGraph: { title, description },
+    twitter: { title, description },
+  };
+}
 
 function CountdownFallback() {
   return (
@@ -44,6 +65,8 @@ export default function HomePage() {
         <div className="flex flex-col items-center">
           <MotivationQuote />
         </div>
+
+        <YearSeoContent />
       </div>
     </main>
   );
