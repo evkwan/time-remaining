@@ -1,6 +1,6 @@
 export const siteConfig = {
-  name: 'Time Remaining',
-  title: 'Time Remaining — Countdown to New Year',
+  name: 'Year Left',
+  title: 'How Many Days Are Left in the Year? — Year Left',
   description:
     'Live countdown to the end of the year with day-of-year context, week number, and a daily motivation quote. Make the time you have left count.',
   url:

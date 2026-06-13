@@ -1,4 +1,4 @@
-# Time Remaining
+# Year Left
 
 A minimalist live countdown to the end of the year — with day-of-year context, week number, year progress, and a daily motivation quote.
 

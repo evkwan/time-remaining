@@ -20,8 +20,9 @@ Next focus: SEO enrichment (OG image, favicon, manifest, crawlable content, Sear
 ### SEO enrichment
 
 - [ ] `opengraph-image.tsx` — branded 1200×630 dynamic OG image (fills blank link preview; biggest CTR win)
-- [ ] Favicon — `icon.tsx` + `apple-icon.tsx` (removes generic globe in search results)
-- [ ] `manifest.ts` — PWA basics / Add to Home Screen
+- [x] Favicon — `src/app/icon.png` (1024×1024, user-supplied)
+- [x] `apple-icon.png` — Apple touch icon (180×180) for iOS "Add to Home Screen"
+- [x] `manifest.ts` — PWA manifest (name/desc from `siteConfig`, 192/512 icons in `public/`, standalone, `#0a0a0a`)
 - [ ] Crawlable About/FAQ section targeting real queries ("how many days left in the year", "what week of the year is it", "day of the year")
 - [ ] Google Search Console — `metadata.verification.google` hook + submit sitemap (needs verification code from user)
 - [ ] (Optional) Dynamic year in `<title>` for freshness/query match
@@ -53,11 +54,14 @@ Next focus: SEO enrichment (OG image, favicon, manifest, crawlable content, Sear
 | 2026-06-13 | `GoalsProvider`/`useGoals()` is the single source of truth; hydrates from storage after mount | Keeps server HTML static (SEO-safe), avoids hydration mismatch (mirrors `useNow`), syncs all views |
 | 2026-06-13 | `/goals` management page is `noindex`; `/` stays the indexed SEO landing | Personal app surface shouldn't compete with the ranking countdown page |
 | 2026-06-13 | Goals reset annually (no rollover); overdue goals stay active + flagged; Phase 2 sign-in stays optional/local-first | Confirmed product decisions; each year is a clean slate, sign-in is opt-in sync not a gate (see `docs/PROJECT_SPEC.md` §11) |
+| 2026-06-14 | Brand standardized on **Year Left** in metadata (`siteConfig.name`/`title`); SEO title leads with the evergreen "days left in the year" intent | Metadata still said "Time Remaining" while nav/domain/spec all said Year Left — aligning removes brand dilution and targets a year-round query over seasonal "Countdown to New Year" |
 
 ## Log
 
 | Date | Summary |
 | --- | --- |
+| 2026-06-14 | **Favicon, Apple icon + PWA manifest.** User supplied `src/app/icon.png` (1024×1024, no alpha; replaced the interim hourglass `icon.svg`). Generated `src/app/apple-icon.png` (180×180) for iOS home screen and `public/icon-192.png` / `public/icon-512.png` for the manifest. Added `src/app/manifest.ts` (`MetadataRoute.Manifest`): name/description from `siteConfig`, `start_url: /`, `display: standalone`, `#0a0a0a` theme/background, 192+512 icons. Typecheck green. |
+| 2026-06-14 | **Favicon + SEO title/brand fix.** Added `src/app/icon.svg` (sky-blue hourglass matching the nav logo) as the site favicon — none existed before (only an unused `public/vercel.svg`). Standardized brand metadata on **Year Left** in `src/lib/site.ts` (was "Time Remaining" despite nav/domain/spec all saying Year Left): `name` → `Year Left`, `title` → `How Many Days Are Left in the Year? — Year Left` (evergreen "days left in the year" intent over seasonal "Countdown to New Year"). Cascades to the `<title>` template, OG/Twitter meta, and JSON-LD `name`. Updated README H1. Left concept labels "Time remaining" in `site-header.tsx`/`goal-card.tsx` intentionally (not brand names). |
 | 2026-06-13 | **Added test suite (Vitest + RTL + jsdom).** Stood up testing infra: `vitest.config.ts` (jsdom, globals, native `resolve.tsconfigPaths`), `src/test/setup.ts` (jest-dom matchers, cleanup, clears `localStorage`), `src/test/goals.ts` (mock `useGoals` factory), and `test`/`test:watch` scripts. 53 tests across 9 files: `countdown` (time-left math), `local-storage-repository` (CRUD, versioning, validation, corrupt-JSON/quota recovery), `useGoals` (hydration, mutations, selector sorting, dialog state, import, provider guard), and components (`goal-card`, `active-goals-section`, `achievements-section`, `goal-form-dialog`, `app-nav`, `goal-management-view` incl. export/import). All green; typecheck/lint/build still pass. |
 | 2026-06-13 | **Fixed goal bar semantics.** Goals never had measurable completion progress; the bar was filling with *elapsed* time (grew toward the deadline), implying fake progress. Reframed as a **time-left countdown**: renamed `src/lib/goals/progress.ts` → `countdown.ts` (`getGoalProgress`/`percentElapsed` → `getGoalCountdown`/`percentTimeLeft`, now depletes from creation to deadline). Updated `goal-card.tsx` and `goal-management-view.tsx` (dropped "% elapsed" label; shows "Time Left"/"Overdue" + days). Updated spec §4.2/§4.4/§6 and the locked decision. Typecheck + lint green. |
 | 2026-06-13 | **Added product spec.** Created `docs/PROJECT_SPEC.md` capturing the current product (overview, goals/non-goals, users, features, data model, architecture, routes, stack, SEO/privacy posture, roadmap, open questions) as the single source of truth for what the app is post-Phase-1. |
