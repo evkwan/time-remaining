@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
+import { AppShell } from '@/components/app-shell';
 import { JsonLd } from '@/components/json-ld';
 import { siteConfig } from '@/lib/site';
 
@@ -82,7 +83,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} min-h-screen font-sans`}
       >
         <JsonLd />
-        {children}
+        <AppShell>{children}</AppShell>
       </body>
     </html>
   );
