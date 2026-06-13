@@ -17,7 +17,7 @@ import { GoalCategoryIcon } from '@/components/goals/goal-category';
 import { Button } from '@/components/ui/button';
 import { useGoals } from '@/hooks/use-goals';
 import { useNow } from '@/hooks/use-now';
-import { getGoalProgress } from '@/lib/goals/progress';
+import { getGoalCountdown } from '@/lib/goals/countdown';
 import type { Goal } from '@/lib/goals/types';
 import { cn } from '@/lib/utils';
 
@@ -35,11 +35,11 @@ function formatCompleted(completedAt?: string): string {
 function ActiveRow({ goal }: { goal: Goal }) {
   const { openGoalForm, complete, remove } = useGoals();
   const now = useNow(60_000);
-  const progress = getGoalProgress(goal, now ?? DateTime.now());
+  const countdown = getGoalCountdown(goal, now ?? DateTime.now());
 
-  const barClass = progress.isOverdue
+  const barClass = countdown.isOverdue
     ? 'from-rose-500 to-rose-400'
-    : progress.slipsPastYearEnd
+    : countdown.slipsPastYearEnd
       ? 'from-amber-400 to-rose-500'
       : 'from-sky-400 to-emerald-400';
 
@@ -93,18 +93,18 @@ function ActiveRow({ goal }: { goal: Goal }) {
       <div className="mt-4 space-y-2">
         <div className="flex items-center justify-between text-xs">
           <span className="font-mono uppercase tracking-[0.15em] text-sky-300">
-            {progress.percentElapsed}% elapsed
+            {countdown.isOverdue ? 'Overdue' : 'Time Left'}
           </span>
           <span className="text-muted-foreground">
-            {progress.isOverdue
-              ? `Overdue · Due ${formatDue(goal.targetDate)}`
-              : `${progress.daysRemaining} days · Due ${formatDue(goal.targetDate)}`}
+            {countdown.isOverdue
+              ? `Due ${formatDue(goal.targetDate)}`
+              : `${countdown.daysRemaining} days · Due ${formatDue(goal.targetDate)}`}
           </span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
           <div
             className={cn('h-full rounded-full bg-gradient-to-r', barClass)}
-            style={{ width: `${progress.percentElapsed}%` }}
+            style={{ width: `${countdown.percentTimeLeft}%` }}
           />
         </div>
       </div>

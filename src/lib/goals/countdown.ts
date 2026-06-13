@@ -3,9 +3,13 @@ import { DateTime } from 'luxon';
 import { getEndOfYear } from '@/lib/time';
 import type { Goal } from './types';
 
-export interface GoalProgress {
-  /** Time elapsed from creation toward the target date, 0-100. */
-  percentElapsed: number;
+export interface GoalCountdown {
+  /**
+   * Share of the goal's window that is still left, 0-100. Starts near 100 at
+   * creation and depletes to 0 at the deadline. This is a countdown of time
+   * remaining, NOT a measure of goal completion (which we can't track).
+   */
+  percentTimeLeft: number;
   /** Whole days remaining until the target date (never negative). */
   daysRemaining: number;
   /** Total span of the goal in days (creation to target). */
@@ -16,30 +20,30 @@ export interface GoalProgress {
 }
 
 /**
- * Derives time-based progress for a goal. Progress is never stored — it is
- * always computed from `createdAt` and `targetDate` relative to `now`.
+ * Derives the time-left countdown for a goal. Always computed from `createdAt`
+ * and `targetDate` relative to `now`; nothing is stored. The returned
+ * `percentTimeLeft` is meant to drive a depleting bar, not a progress bar.
  */
-export function getGoalProgress(
+export function getGoalCountdown(
   goal: Goal,
   now: DateTime = DateTime.now(),
-): GoalProgress {
+): GoalCountdown {
   const created = DateTime.fromISO(goal.createdAt);
   const target = DateTime.fromISO(goal.targetDate).endOf('day');
 
   const totalMs = target.toMillis() - created.toMillis();
-  const elapsedMs = now.toMillis() - created.toMillis();
+  const remainingMs = target.toMillis() - now.toMillis();
 
-  const percentElapsed =
+  const percentTimeLeft =
     totalMs <= 0
-      ? 100
-      : Math.min(100, Math.max(0, Math.round((elapsedMs / totalMs) * 100)));
+      ? 0
+      : Math.min(100, Math.max(0, Math.round((remainingMs / totalMs) * 100)));
 
-  const remainingDays = target.diff(now, 'days').days;
-  const daysRemaining = Math.max(0, Math.ceil(remainingDays));
+  const daysRemaining = Math.max(0, Math.ceil(target.diff(now, 'days').days));
   const daysTotal = Math.max(0, Math.ceil(target.diff(created, 'days').days));
 
   return {
-    percentElapsed,
+    percentTimeLeft,
     daysRemaining,
     daysTotal,
     isOverdue: now > target,

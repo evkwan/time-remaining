@@ -6,7 +6,7 @@ import { Check, Pencil } from 'lucide-react';
 import { GoalCategoryIcon } from '@/components/goals/goal-category';
 import { useGoals } from '@/hooks/use-goals';
 import { useNow } from '@/hooks/use-now';
-import { getGoalProgress } from '@/lib/goals/progress';
+import { getGoalCountdown } from '@/lib/goals/countdown';
 import type { Goal } from '@/lib/goals/types';
 import { cn } from '@/lib/utils';
 
@@ -18,11 +18,11 @@ function formatTargetDate(targetDate: string): string {
 export function GoalCard({ goal }: { goal: Goal }) {
   const { openGoalForm, complete } = useGoals();
   const now = useNow(60_000);
-  const progress = getGoalProgress(goal, now ?? DateTime.now());
+  const countdown = getGoalCountdown(goal, now ?? DateTime.now());
 
-  const barClass = progress.isOverdue
+  const barClass = countdown.isOverdue
     ? 'from-rose-500 to-rose-400'
-    : progress.slipsPastYearEnd
+    : countdown.slipsPastYearEnd
       ? 'from-amber-400 to-rose-500'
       : 'from-sky-400 to-emerald-400';
 
@@ -49,10 +49,10 @@ export function GoalCard({ goal }: { goal: Goal }) {
       <div className="mt-auto space-y-2">
         <div className="flex items-center justify-between text-xs">
           <span className="font-mono uppercase tracking-[0.18em] text-sky-300">
-            {progress.isOverdue ? 'Overdue' : 'Time Remaining'}
+            {countdown.isOverdue ? 'Overdue' : 'Time Remaining'}
           </span>
           <span className="font-medium text-foreground">
-            {progress.daysRemaining} Days
+            {countdown.daysRemaining} Days
           </span>
         </div>
         <div className="h-1.5 w-full overflow-hidden rounded-full bg-secondary">
@@ -61,7 +61,7 @@ export function GoalCard({ goal }: { goal: Goal }) {
               'h-full rounded-full bg-gradient-to-r transition-all duration-500',
               barClass,
             )}
-            style={{ width: `${progress.percentElapsed}%` }}
+            style={{ width: `${countdown.percentTimeLeft}%` }}
           />
         </div>
       </div>

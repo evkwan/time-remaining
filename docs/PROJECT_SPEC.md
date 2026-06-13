@@ -53,7 +53,7 @@ Lifecycle / statuses:
 
 Actions: create, edit, delete, mark complete, archive, restore (reactivate).
 
-**Progress is time-derived, never stored** — the bar reflects elapsed time from creation toward the deadline, and the card shows whole days remaining. Goals that are overdue or whose deadline slips past Dec 31 are visually flagged.
+**There is no completion-progress tracking** — we can't meaningfully measure how "done" a goal is. Instead, each goal shows a **time-left countdown**: a bar that starts full at creation and depletes toward empty at the deadline, plus the whole days remaining. This is computed from `createdAt`/`targetDate` relative to now and never stored. Goals that are overdue or whose deadline slips past Dec 31 are visually flagged.
 
 ### 4.3 Dashboard (`/`)
 
@@ -65,7 +65,7 @@ Actions: create, edit, delete, mark complete, archive, restore (reactivate).
 
 ### 4.4 Goal Management (`/goals`)
 
-- Grouped lists: **Active** (with progress + due date), **Completed** (with archive + delete), **Archived** (with restore + delete).
+- Grouped lists: **Active** (with time-left countdown + due date), **Completed** (with archive + delete), **Archived** (with restore + delete).
 - **JSON export / import** as a manual backup-and-restore safety net (the only persistence guard before accounts exist).
 - Marked `noindex` so it never competes with the ranking landing page.
 
@@ -107,10 +107,10 @@ flowchart TD
   Hook --> Repo["GoalsRepository interface"]
   Repo --> Local["LocalStorageGoalsRepository (Phase 1)"]
   Repo -. "Phase 2" .-> Supa["SupabaseGoalsRepository"]
-  UI --> Time["lib/time.ts + progress.ts (per-goal countdown)"]
+  UI --> Time["lib/time.ts + countdown.ts (per-goal time-left)"]
 ```
 
-- **Storage** (`src/lib/goals/`): `types.ts`, `repository.ts` (the `GoalsRepository` interface), `local-storage-repository.ts` (versioned, validated), `progress.ts` (time math, reuses `src/lib/time.ts`).
+- **Storage** (`src/lib/goals/`): `types.ts`, `repository.ts` (the `GoalsRepository` interface), `local-storage-repository.ts` (versioned, validated), `countdown.ts` (time-left math, reuses `src/lib/time.ts`).
 - **State** (`src/hooks/use-goals.tsx`): `GoalsProvider` + `useGoals()` — the single in-memory source of truth. Hydrates from storage after mount (mirrors `useNow`) so server HTML stays static and there is no hydration mismatch. Owns the create/edit dialog state.
 - **Shell** (`src/components/app-shell.tsx`): wraps the app via the root layout with the provider, nav, shared dialog, and footer.
 - **UI** (`src/components/goals/`): goal-card, active-goals-section, achievements-section, goal-form-dialog, empty-state (create tile), goal-management-view, goal-category.
